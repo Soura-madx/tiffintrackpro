@@ -6,6 +6,8 @@ import OrderGeneration from "../AdminComponent/Order";
 import MenuManagement from "../AdminComponent/MenuManagement";
 import ServiceDays from "../AdminComponent/ServiceDays";
 import DeliveryManagement from "../AdminComponent/DeliveryManagement";
+import Subscription from "../AdminComponent/Subscription";
+import PaymentManagement from "../AdminComponent/PaymentManagement";
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -17,6 +19,7 @@ const AdminPanel = () => {
     "orders",
     "delivery",
     "payments",
+    "subscription",
     "complaints",
     "leads",
     "menu",
@@ -64,6 +67,10 @@ const AdminPanel = () => {
           <ServiceDays/>
         )}
 
+        {activeTab === "subscription" && (
+          <Subscription/>
+        )}
+
         {/* PLANS */}
         {activeTab === "plans" && (
           <PlanManagement/>
@@ -92,17 +99,7 @@ const AdminPanel = () => {
 
         {/* PAYMENTS */}
         {activeTab === "payments" && (
-          <div>
-            <h1 className="text-2xl font-bold mb-4">Payments</h1>
-
-            <Table
-              headers={["Customer", "Amount", "Status"]}
-              data={[
-                ["Rahul", "₹2500", "Paid"],
-                ["Priya", "₹700", "Pending"],
-              ]}
-            />
-          </div>
+          <PaymentManagement/>
         )}
 
         {/* COMPLAINTS */}

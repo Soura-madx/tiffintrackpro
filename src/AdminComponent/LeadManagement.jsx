@@ -1,260 +1,321 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import {
+  MessageCircle,
   Phone,
+  Mail,
   MapPin,
-  CalendarDays,
   Clock3,
-  CheckCircle2,
-  XCircle,
+  User,
   Search,
 } from "lucide-react";
 
-const Leads = () => {
+const TenantCustomerQueries = () => {
+  /*
+  =========================================
+  STATES
+  =========================================
+  */
+
   const [search, setSearch] = useState("");
 
-  const leads = [
-    {
-      id: 1,
-      customerName: "Rahul Sharma",
-      phone: "+91 9876543210",
-      address: "Vijay Nagar, Indore",
-      plan: "Monthly Lunch Plan",
-      meals: "Lunch",
-      persons: 1,
-      price: "₹2,500",
-      startDate: "20 May 2026",
-      requestTime: "10:30 AM",
-      status: "pending",
-      email: "korisourabh483@gmail.com"
-    },
+  const [queries, setQueries] = useState([]);
 
-    {
-      id: 2,
-      customerName: "Priya Verma",
-      phone: "+91 9988776655",
-      address: "Palasia, Indore",
-      plan: "Weekly Dinner Plan",
-      meals: "Dinner",
-      persons: 2,
-      price: "₹1,800",
-      startDate: "21 May 2026",
-      requestTime: "12:15 PM",
-      status: "active",
-      email: "korisourabh483@gmail.com"
-    },
+  /*
+  =========================================
+  DUMMY DATA
+  =========================================
+  */
 
-    {
-      id: 3,
-      customerName: "Amit Patel",
-      phone: "+91 9123456780",
-      address: "Bhanwar Kuan, Indore",
-      plan: "Full Day Combo",
-      meals: "Breakfast + Lunch + Dinner",
-      persons: 3,
-      price: "₹5,400",
-      startDate: "22 May 2026",
-      requestTime: "09:00 AM",
-      status: "pending",
-      email: "korisourabh483@gmail.com"
-    },
+  useEffect(() => {
+    const dummyQueries = [
+      {
+        id: 1,
+        customer_name: "Rahul Sharma",
+        phone: "9876543210",
+        email: "rahul@gmail.com",
+        city: "Bhopal",
+        locality: "MP Nagar",
+        query_type: "Delivery Problem",
+        message:
+          "My lunch was not delivered today.",
+        status: "Pending",
+        created_at: "20 May 2026",
+      },
 
-    {
-      id: 4,
-      customerName: "Sneha Jain",
-      phone: "+91 9000011122",
-      address: "Scheme No. 140, Indore",
-      plan: "Monthly Dinner Plan",
-      meals: "Dinner",
-      persons: 1,
-      price: "₹2,200",
-      startDate: "24 May 2026",
-      requestTime: "07:45 PM",
-      status: "rejected",
-      email: "korisourabh483@gmail.com"
-    },
-  ];
+      {
+        id: 2,
+        customer_name: "Priya Jain",
+        phone: "9898989898",
+        email: "priya@gmail.com",
+        city: "Indore",
+        locality: "Vijay Nagar",
+        query_type: "Food Quality",
+        message:
+          "Food quantity was less yesterday.",
+        status: "Resolved",
+        created_at: "19 May 2026",
+      },
 
-  const filteredLeads = leads.filter(
-    (lead) =>
-      lead.customerName
+      {
+        id: 3,
+        customer_name: "Aman Verma",
+        phone: "9123456789",
+        email: "aman@gmail.com",
+        city: "Bhopal",
+        locality: "Arera Colony",
+        query_type: "Refund Request",
+        message:
+          "Please refund paused meal amount.",
+        status: "In Progress",
+        created_at: "18 May 2026",
+      },
+    ];
+
+    setQueries(dummyQueries);
+  }, []);
+
+  /*
+  =========================================
+  FILTER
+  =========================================
+  */
+
+  const filteredQueries = queries.filter(
+    (query) =>
+      query.customer_name
         .toLowerCase()
         .includes(search.toLowerCase()) ||
-      lead.phone.includes(search) ||
-      lead.address
+      query.phone.includes(search) ||
+      query.query_type
         .toLowerCase()
         .includes(search.toLowerCase()),
   );
 
+  /*
+  =========================================
+  UPDATE STATUS
+  =========================================
+  */
+
+  const updateStatus = (id, status) => {
+    const updated = queries.map((query) =>
+      query.id === id
+        ? { ...query, status }
+        : query,
+    );
+
+    setQueries(updated);
+  };
+
   return (
-    <div className="min-h-screen bg-[#f5f5f5] p-4 md:p-8">
+    <div className="min-h-screen bg-gray-100 p-6">
       {/* HEADER */}
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-8">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black text-gray-800">
-            Customer Leads
+          <h1 className="text-4xl font-black">
+            Customer Queries
           </h1>
 
           <p className="text-gray-500 mt-2">
-            Manage customer tiffin plan requests
+            Manage customer complaints,
+            support requests and delivery
+            issues
           </p>
         </div>
 
         {/* SEARCH */}
 
-        <div className="relative w-full md:w-[360px]">
-          <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            size={20}
-          />
+        <div className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-md w-full lg:w-[380px]">
+          <Search className="text-orange-500" />
 
           <input
             type="text"
-            placeholder="Search customer, phone or address"
+            placeholder="Search customer..."
             value={search}
             onChange={(e) =>
               setSearch(e.target.value)
             }
-            className="w-full bg-white border border-gray-200 rounded-2xl pl-12 pr-4 py-4 outline-none focus:border-orange-400 shadow-sm"
+            className="w-full outline-none"
           />
         </div>
       </div>
 
-      {/* LEADS */}
+      {/* STATS */}
 
-      <div className="grid gap-6">
-        {filteredLeads.map((lead) => (
+      <div className="grid md:grid-cols-3 gap-6 mb-10">
+        <div className="bg-white rounded-3xl p-6 shadow-md">
+          <h3 className="text-gray-500 font-semibold">
+            Total Queries
+          </h3>
+
+          <h2 className="text-5xl font-black mt-3">
+            {queries.length}
+          </h2>
+        </div>
+
+        <div className="bg-white rounded-3xl p-6 shadow-md">
+          <h3 className="text-gray-500 font-semibold">
+            Pending Queries
+          </h3>
+
+          <h2 className="text-5xl font-black mt-3 text-orange-500">
+            {
+              queries.filter(
+                (q) => q.status === "Pending",
+              ).length
+            }
+          </h2>
+        </div>
+
+        <div className="bg-white rounded-3xl p-6 shadow-md">
+          <h3 className="text-gray-500 font-semibold">
+            Resolved Queries
+          </h3>
+
+          <h2 className="text-5xl font-black mt-3 text-green-500">
+            {
+              queries.filter(
+                (q) => q.status === "Resolved",
+              ).length
+            }
+          </h2>
+        </div>
+      </div>
+
+      {/* QUERY LIST */}
+
+      <div className="space-y-6">
+        {filteredQueries.map((query) => (
           <div
-            key={lead.id}
-            className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition"
+            key={query.id}
+            className="bg-white rounded-3xl shadow-md p-7"
           >
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-              {/* LEFT */}
+            {/* TOP */}
 
-              <div className="flex-1">
-                {/* TOP */}
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5 mb-6">
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center">
+                    <User className="text-orange-500" />
+                  </div>
 
-                <div className="flex flex-wrap items-center gap-3 mb-5">
-                  <h2 className="text-2xl font-black text-gray-800">
-                    {lead.customerName}
-                  </h2>
+                  <div>
+                    <h2 className="text-2xl font-black">
+                      {query.customer_name}
+                    </h2>
 
-                  <span
-                    className={`px-4 py-2 rounded-full text-sm font-bold capitalize ${
-                      lead.status === "active"
-                        ? "bg-green-100 text-green-700"
-                        : lead.status === "rejected"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-orange-100 text-orange-700"
-                    }`}
-                  >
-                    {lead.status}
-                  </span>
+                    <p className="text-gray-500 text-sm">
+                      {query.created_at}
+                    </p>
+                  </div>
                 </div>
 
-                {/* INFO */}
+                <div className="flex flex-wrap gap-5 text-sm text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Phone size={16} />
 
-                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
-                      <Phone size={16} />
-                      Phone
-                    </div>
-
-                    <h4 className="font-bold text-gray-800">
-                      {lead.phone}
-                    </h4>
+                    <span>{query.phone}</span>
                   </div>
 
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
-                      <MapPin size={16} />
-                      Address
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Mail size={16} />
 
-                    <h4 className="font-bold text-gray-800">
-                      {lead.address}
-                    </h4>
+                    <span>{query.email}</span>
                   </div>
 
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
-                      🍱 Plan
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin size={16} />
 
-                    <h4 className="font-bold text-gray-800">
-                      {lead.plan}
-                    </h4>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
-                      🍴 Meals
-                    </div>
-
-                    <h4 className="font-bold text-gray-800">
-                      {lead.meals}
-                    </h4>
-                  </div>
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
-                     Email
-                    </div>
-
-                    <h4 className="font-bold text-gray-800">
-                      {lead.email}
-                    </h4>
-                  </div>
-
-                 
-
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
-                      💰 Price
-                    </div>
-
-                    <h4 className="font-bold text-gray-800">
-                      {lead.price}
-                    </h4>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
-                      <CalendarDays size={16} />
-                      Start Date
-                    </div>
-
-                    <h4 className="font-bold text-gray-800">
-                      {lead.startDate}
-                    </h4>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
-                      <Clock3 size={16} />
-                      Request Time
-                    </div>
-
-                    <h4 className="font-bold text-gray-800">
-                      {lead.requestTime}
-                    </h4>
+                    <span>
+                      {query.locality},{" "}
+                      {query.city}
+                    </span>
                   </div>
                 </div>
               </div>
 
-              {/* ACTIONS */}
+              {/* STATUS */}
 
-              <div className="flex lg:flex-col gap-3 min-w-[220px]">
-                <button className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-5 rounded-2xl transition">
-                  <CheckCircle2 size={20} />
-                  Activate Plan
-                </button>
-
-                <button className="flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-5 rounded-2xl transition">
-                  <XCircle size={20} />
-                  Reject Lead
-                </button>
+              <div>
+                <span
+                  className={`px-5 py-3 rounded-full text-sm font-bold ${
+                    query.status === "Resolved"
+                      ? "bg-green-100 text-green-700"
+                      : query.status ===
+                        "In Progress"
+                      ? "bg-blue-100 text-blue-700"
+                      : "bg-orange-100 text-orange-700"
+                  }`}
+                >
+                  {query.status}
+                </span>
               </div>
+            </div>
+
+            {/* QUERY */}
+
+            <div className="bg-gray-50 rounded-2xl p-5 mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <MessageCircle className="text-orange-500" />
+
+                <h3 className="font-bold text-lg">
+                  {query.query_type}
+                </h3>
+              </div>
+
+              <p className="text-gray-700 leading-relaxed">
+                {query.message}
+              </p>
+            </div>
+
+            {/* ACTIONS */}
+
+            <div className="flex flex-wrap gap-4">
+              <a
+                href={`tel:${query.phone}`}
+                className="bg-black text-white px-5 py-3 rounded-2xl font-semibold flex items-center gap-2"
+              >
+                <Phone size={18} />
+
+                Call Customer
+              </a>
+
+              <a
+                href={`https://wa.me/91${query.phone}`}
+                target="_blank"
+                rel="noreferrer"
+                className="bg-green-500 text-white px-5 py-3 rounded-2xl font-semibold flex items-center gap-2"
+              >
+                <MessageCircle size={18} />
+
+                WhatsApp
+              </a>
+
+              <button
+                onClick={() =>
+                  updateStatus(
+                    query.id,
+                    "In Progress",
+                  )
+                }
+                className="bg-blue-500 text-white px-5 py-3 rounded-2xl font-semibold"
+              >
+                Mark In Progress
+              </button>
+
+              <button
+                onClick={() =>
+                  updateStatus(
+                    query.id,
+                    "Resolved",
+                  )
+                }
+                className="bg-orange-500 text-white px-5 py-3 rounded-2xl font-semibold"
+              >
+                Mark Resolved
+              </button>
             </div>
           </div>
         ))}
@@ -262,14 +323,16 @@ const Leads = () => {
 
       {/* EMPTY */}
 
-      {filteredLeads.length === 0 && (
-        <div className="bg-white rounded-3xl p-16 text-center mt-10 shadow-sm">
-          <h3 className="text-2xl font-bold text-gray-700">
-            No Leads Found
-          </h3>
+      {filteredQueries.length === 0 && (
+        <div className="bg-white rounded-3xl p-16 text-center shadow-md">
+          <Clock3 className="mx-auto text-gray-300 w-20 h-20 mb-5" />
 
-          <p className="text-gray-500 mt-2">
-            Try searching with another keyword
+          <h2 className="text-3xl font-black mb-3">
+            No Queries Found
+          </h2>
+
+          <p className="text-gray-500">
+            Customer queries will appear here
           </p>
         </div>
       )}
@@ -277,4 +340,4 @@ const Leads = () => {
   );
 };
 
-export default Leads;
+export default TenantCustomerQueries;

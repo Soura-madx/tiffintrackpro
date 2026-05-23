@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Upload,
-  Clock3,
-  MapPin,
-  ImagePlus,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { Upload, Clock3, MapPin, ImagePlus, Plus, Trash2 } from "lucide-react";
 
 const TenantRegistration = () => {
   const weekDays = [
@@ -37,6 +30,9 @@ const TenantRegistration = () => {
     city: "",
     pincode: "",
     googleReview: "",
+    email: "",
+
+    experience: "",
 
     serviceType: ["delivery"],
 
@@ -74,6 +70,13 @@ const TenantRegistration = () => {
 
   const [images, setImages] = useState([]);
 
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const specialtiesList = [
     "Everyday Changing Menu",
     "Hygienic Food",
@@ -87,12 +90,7 @@ const TenantRegistration = () => {
     "Pure Veg",
   ];
 
-  const services = [
-    "delivery",
-    "takeaway",
-    "dine-in",
-    "drive through",
-  ];
+  const services = ["delivery", "takeaway", "dine-in", "drive through"];
 
   // TOGGLE DAYS
 
@@ -100,9 +98,7 @@ const TenantRegistration = () => {
     if (form.selectedDays.includes(day)) {
       setForm({
         ...form,
-        selectedDays: form.selectedDays.filter(
-          (d) => d !== day
-        ),
+        selectedDays: form.selectedDays.filter((d) => d !== day),
       });
     } else {
       setForm({
@@ -118,17 +114,12 @@ const TenantRegistration = () => {
     if (form.serviceType.includes(service)) {
       setForm({
         ...form,
-        serviceType: form.serviceType.filter(
-          (s) => s !== service
-        ),
+        serviceType: form.serviceType.filter((s) => s !== service),
       });
     } else {
       setForm({
         ...form,
-        serviceType: [
-          ...form.serviceType,
-          service,
-        ],
+        serviceType: [...form.serviceType, service],
       });
     }
   };
@@ -139,9 +130,7 @@ const TenantRegistration = () => {
     if (form.specialties.includes(item)) {
       setForm({
         ...form,
-        specialties: form.specialties.filter(
-          (s) => s !== item
-        ),
+        specialties: form.specialties.filter((s) => s !== item),
       });
     } else {
       setForm({
@@ -158,10 +147,7 @@ const TenantRegistration = () => {
 
     setForm({
       ...form,
-      deliveryAreas: [
-        ...form.deliveryAreas,
-        form.extraLocality,
-      ],
+      deliveryAreas: [...form.deliveryAreas, form.extraLocality],
       extraLocality: "",
     });
   };
@@ -172,13 +158,10 @@ const TenantRegistration = () => {
         {/* HEADER */}
 
         <div className="mb-8">
-          <h1 className="text-4xl font-black">
-            Tiffin Center Registration
-          </h1>
+          <h1 className="text-4xl font-black">Tiffin Center Registration</h1>
 
           <p className="text-gray-500 mt-2">
-            Register your tiffin service &
-            start receiving orders
+            Register your tiffin service & start receiving orders
           </p>
         </div>
 
@@ -213,9 +196,7 @@ const TenantRegistration = () => {
               {/* OWNER NAME */}
 
               <div>
-                <label className="font-bold block mb-2">
-                  Owner Name
-                </label>
+                <label className="font-bold block mb-2">Owner Name</label>
 
                 <input
                   type="text"
@@ -234,9 +215,7 @@ const TenantRegistration = () => {
               {/* TAGLINE */}
 
               <div>
-                <label className="font-bold block mb-2">
-                  Tag Line
-                </label>
+                <label className="font-bold block mb-2">Tag Line</label>
 
                 <input
                   type="text"
@@ -252,12 +231,24 @@ const TenantRegistration = () => {
                 />
               </div>
 
+              {/* EMAIL */}
+              <div>
+                <label className="font-semibold text-sm">Email Address</label>
+
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="Enter Email Address"
+                  className="w-full border rounded-xl p-3 mt-2"
+                />
+              </div>
+
               {/* ADDRESS */}
 
               <div>
-                <label className="font-bold block mb-2">
-                  Address
-                </label>
+                <label className="font-bold block mb-2">Address</label>
 
                 <textarea
                   rows="4"
@@ -276,9 +267,7 @@ const TenantRegistration = () => {
               {/* MOBILE */}
 
               <div>
-                <label className="font-bold block mb-2">
-                  Mobile Number
-                </label>
+                <label className="font-bold block mb-2">Mobile Number</label>
 
                 <input
                   type="number"
@@ -298,9 +287,7 @@ const TenantRegistration = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="font-bold block mb-2">
-                    City
-                  </label>
+                  <label className="font-bold block mb-2">City</label>
 
                   <input
                     type="text"
@@ -317,9 +304,7 @@ const TenantRegistration = () => {
                 </div>
 
                 <div>
-                  <label className="font-bold block mb-2">
-                    Pincode
-                  </label>
+                  <label className="font-bold block mb-2">Pincode</label>
 
                   <input
                     type="number"
@@ -339,23 +324,17 @@ const TenantRegistration = () => {
               {/* LOGO */}
 
               <div>
-                <label className="font-bold block mb-3">
-                  Upload Logo
-                </label>
+                <label className="font-bold block mb-3">Upload Logo</label>
 
                 <label className="border-2 border-dashed rounded-3xl p-6 flex flex-col items-center justify-center cursor-pointer bg-gray-50">
                   <Upload size={40} />
 
-                  <p className="mt-3 font-semibold">
-                    Upload Logo
-                  </p>
+                  <p className="mt-3 font-semibold">Upload Logo</p>
 
                   <input
                     type="file"
                     hidden
-                    onChange={(e) =>
-                      setLogo(e.target.files[0])
-                    }
+                    onChange={(e) => setLogo(e.target.files[0])}
                   />
                 </label>
 
@@ -376,19 +355,13 @@ const TenantRegistration = () => {
                 <label className="border-2 border-dashed rounded-3xl p-6 flex flex-col items-center justify-center cursor-pointer bg-gray-50">
                   <ImagePlus size={40} />
 
-                  <p className="mt-3 font-semibold">
-                    Upload 4-5 Images
-                  </p>
+                  <p className="mt-3 font-semibold">Upload 4-5 Images</p>
 
                   <input
                     type="file"
                     multiple
                     hidden
-                    onChange={(e) =>
-                      setImages([
-                        ...e.target.files,
-                      ])
-                    }
+                    onChange={(e) => setImages([...e.target.files])}
                   />
                 </label>
 
@@ -413,9 +386,7 @@ const TenantRegistration = () => {
               {/* SERVICE DAYS */}
 
               <div>
-                <label className="font-bold block mb-3">
-                  Service Days
-                </label>
+                <label className="font-bold block mb-3">Service Days</label>
 
                 <div className="flex gap-3 mb-4">
                   <button
@@ -426,8 +397,7 @@ const TenantRegistration = () => {
                       })
                     }
                     className={`px-5 py-3 rounded-2xl font-bold ${
-                      form.timingType ===
-                      "everyday"
+                      form.timingType === "everyday"
                         ? "bg-black text-white"
                         : "bg-gray-100"
                     }`}
@@ -443,8 +413,7 @@ const TenantRegistration = () => {
                       })
                     }
                     className={`px-5 py-3 rounded-2xl font-bold ${
-                      form.timingType ===
-                      "custom"
+                      form.timingType === "custom"
                         ? "bg-black text-white"
                         : "bg-gray-100"
                     }`}
@@ -453,19 +422,14 @@ const TenantRegistration = () => {
                   </button>
                 </div>
 
-                {form.timingType ===
-                  "custom" && (
+                {form.timingType === "custom" && (
                   <div className="flex flex-wrap gap-3">
                     {weekDays.map((day) => (
                       <button
                         key={day}
-                        onClick={() =>
-                          toggleDay(day)
-                        }
+                        onClick={() => toggleDay(day)}
                         className={`px-4 py-2 rounded-xl font-semibold ${
-                          form.selectedDays.includes(
-                            day
-                          )
+                          form.selectedDays.includes(day)
                             ? "bg-orange-500 text-white"
                             : "bg-gray-100"
                         }`}
@@ -480,9 +444,7 @@ const TenantRegistration = () => {
               {/* SHIFT */}
 
               <div>
-                <label className="font-bold block mb-3">
-                  Service Shift
-                </label>
+                <label className="font-bold block mb-3">Service Shift</label>
 
                 <div className="flex gap-3 mb-4">
                   <button
@@ -493,8 +455,7 @@ const TenantRegistration = () => {
                       })
                     }
                     className={`px-5 py-3 rounded-2xl font-bold ${
-                      form.shiftType ===
-                      "timing"
+                      form.shiftType === "timing"
                         ? "bg-black text-white"
                         : "bg-gray-100"
                     }`}
@@ -510,8 +471,7 @@ const TenantRegistration = () => {
                       })
                     }
                     className={`px-5 py-3 rounded-2xl font-bold ${
-                      form.shiftType ===
-                      "24hrs"
+                      form.shiftType === "24hrs"
                         ? "bg-black text-white"
                         : "bg-gray-100"
                     }`}
@@ -520,8 +480,7 @@ const TenantRegistration = () => {
                   </button>
                 </div>
 
-                {form.shiftType ===
-                  "timing" && (
+                {form.shiftType === "timing" && (
                   <div className="grid grid-cols-2 gap-4">
                     <input
                       type="time"
@@ -539,37 +498,21 @@ const TenantRegistration = () => {
               {/* DELIVERY TIMING */}
 
               <div>
-                <label className="font-bold block mb-4">
-                  Delivery Timing
-                </label>
+                <label className="font-bold block mb-4">Delivery Timing</label>
 
                 <div className="space-y-4">
-                  {[
-                    "breakfast",
-                    "lunch",
-                    "dinner",
-                  ].map((meal) => (
-                    <div
-                      key={meal}
-                      className="bg-gray-50 rounded-2xl p-4"
-                    >
-                      <p className="font-bold capitalize mb-3">
-                        {meal}
-                      </p>
+                  {["breakfast", "lunch", "dinner"].map((meal) => (
+                    <div key={meal} className="bg-gray-50 rounded-2xl p-4">
+                      <p className="font-bold capitalize mb-3">{meal}</p>
 
                       <input
                         type="text"
                         placeholder="8 AM - 10 AM"
-                        value={
-                          form[
-                            `${meal}Delivery`
-                          ]
-                        }
+                        value={form[`${meal}Delivery`]}
                         onChange={(e) =>
                           setForm({
                             ...form,
-                            [`${meal}Delivery`]:
-                              e.target.value,
+                            [`${meal}Delivery`]: e.target.value,
                           })
                         }
                         className="w-full border rounded-2xl px-4 py-3"
@@ -590,15 +533,9 @@ const TenantRegistration = () => {
                   {services.map((service) => (
                     <button
                       key={service}
-                      onClick={() =>
-                        toggleService(
-                          service
-                        )
-                      }
+                      onClick={() => toggleService(service)}
                       className={`px-4 py-3 rounded-2xl font-semibold capitalize ${
-                        form.serviceType.includes(
-                          service
-                        )
+                        form.serviceType.includes(service)
                           ? "bg-orange-500 text-white"
                           : "bg-gray-100"
                       }`}
@@ -612,71 +549,51 @@ const TenantRegistration = () => {
               {/* SPECIALITIES */}
 
               <div>
-                <label className="font-bold block mb-3">
-                  Specialities
-                </label>
+                <label className="font-bold block mb-3">Specialities</label>
 
                 <div className="flex flex-wrap gap-3">
-                  {specialtiesList.map(
-                    (item) => (
-                      <button
-                        key={item}
-                        onClick={() =>
-                          toggleSpeciality(
-                            item
-                          )
-                        }
-                        className={`px-4 py-3 rounded-2xl font-semibold ${
-                          form.specialties.includes(
-                            item
-                          )
-                            ? "bg-orange-500 text-white"
-                            : "bg-gray-100"
-                        }`}
-                      >
-                        {item}
-                      </button>
-                    )
-                  )}
+                  {specialtiesList.map((item) => (
+                    <button
+                      key={item}
+                      onClick={() => toggleSpeciality(item)}
+                      className={`px-4 py-3 rounded-2xl font-semibold ${
+                        form.specialties.includes(item)
+                          ? "bg-orange-500 text-white"
+                          : "bg-gray-100"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
                 </div>
               </div>
 
               {/* SOCIAL LINKS */}
 
               <div>
-                <label className="font-bold block mb-3">
-                  Social Links
-                </label>
+                <label className="font-bold block mb-3">Social Links</label>
 
                 <div className="space-y-3">
-                  {[
-                    "instagram",
-                    "facebook",
-                    "youtube",
-                    "website",
-                  ].map((social) => (
-                    <input
-                      key={social}
-                      type="text"
-                      placeholder={`${social} link`}
-                      value={
-                        form.socialLinks[
-                          social
-                        ]
-                      }
-                      onChange={(e) =>
-                        setForm({
-                          ...form,
-                          socialLinks: {
-                            ...form.socialLinks,
-                            [social]:
-                              e.target.value,
-                          },
-                        })
-                      }
-                      className="w-full border rounded-2xl px-4 py-3"
-                    />
-                  ))}
+                  {["instagram", "facebook", "youtube", "website"].map(
+                    (social) => (
+                      <input
+                        key={social}
+                        type="text"
+                        placeholder={`${social} link`}
+                        value={form.socialLinks[social]}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            socialLinks: {
+                              ...form.socialLinks,
+                              [social]: e.target.value,
+                            },
+                          })
+                        }
+                        className="w-full border rounded-2xl px-4 py-3"
+                      />
+                    ),
+                  )}
                 </div>
               </div>
 
@@ -694,20 +611,33 @@ const TenantRegistration = () => {
                   onChange={(e) =>
                     setForm({
                       ...form,
-                      googleReview:
-                        e.target.value,
+                      googleReview: e.target.value,
                     })
                   }
                   className="w-full border rounded-2xl px-4 py-3"
                 />
               </div>
 
+              {/* EXPERIENCE */}
+              <div>
+                <label className="font-semibold text-sm">
+                  Years Of Experience
+                </label>
+
+                <input
+                  type="number"
+                  name="experience"
+                  value={form.experience}
+                  onChange={handleChange}
+                  placeholder="5"
+                  className="w-full border rounded-xl p-3 mt-2"
+                />
+              </div>
+
               {/* DELIVERY AREAS */}
 
               <div>
-                <label className="font-bold block mb-3">
-                  Delivery Areas
-                </label>
+                <label className="font-bold block mb-3">Delivery Areas</label>
 
                 <div className="flex gap-3">
                   <select
@@ -715,32 +645,22 @@ const TenantRegistration = () => {
                     onChange={(e) =>
                       setForm({
                         ...form,
-                        extraLocality:
-                          e.target.value,
+                        extraLocality: e.target.value,
                       })
                     }
                     className="flex-1 border rounded-2xl px-4 py-3"
                   >
-                    <option value="">
-                      Select Locality
-                    </option>
+                    <option value="">Select Locality</option>
 
-                    {localityOptions.map(
-                      (area) => (
-                        <option
-                          key={area}
-                          value={area}
-                        >
-                          {area}
-                        </option>
-                      )
-                    )}
+                    {localityOptions.map((area) => (
+                      <option key={area} value={area}>
+                        {area}
+                      </option>
+                    ))}
                   </select>
 
                   <button
-                    onClick={
-                      addDeliveryArea
-                    }
+                    onClick={addDeliveryArea}
                     className="bg-orange-500 text-white px-5 rounded-2xl"
                   >
                     <Plus />
@@ -750,39 +670,29 @@ const TenantRegistration = () => {
                 {/* AREA LIST */}
 
                 <div className="flex flex-wrap gap-3 mt-4">
-                  {form.deliveryAreas.map(
-                    (area, i) => (
-                      <div
-                        key={i}
-                        className="bg-orange-100 text-orange-700 px-4 py-2 rounded-xl flex items-center gap-2"
+                  {form.deliveryAreas.map((area, i) => (
+                    <div
+                      key={i}
+                      className="bg-orange-100 text-orange-700 px-4 py-2 rounded-xl flex items-center gap-2"
+                    >
+                      <MapPin size={16} />
+
+                      {area}
+
+                      <button
+                        onClick={() =>
+                          setForm({
+                            ...form,
+                            deliveryAreas: form.deliveryAreas.filter(
+                              (_, index) => index !== i,
+                            ),
+                          })
+                        }
                       >
-                        <MapPin size={16} />
-
-                        {area}
-
-                        <button
-                          onClick={() =>
-                            setForm({
-                              ...form,
-                              deliveryAreas:
-                                form.deliveryAreas.filter(
-                                  (
-                                    _,
-                                    index
-                                  ) =>
-                                    index !==
-                                    i
-                                ),
-                            })
-                          }
-                        >
-                          <Trash2
-                            size={16}
-                          />
-                        </button>
-                      </div>
-                    )
-                  )}
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
